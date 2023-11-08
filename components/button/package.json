@@ -1,0 +1,43 @@
+{
+    "name": "@best-design/button",
+    "version": "0.0.1",
+    "main": "lib/index.js",
+    "module": "es/index.js",
+    "typings": "es/index.d.ts",
+    "scripts": {
+        "dev:es": "pnpm build:es -- --watch",
+        "dev:cjs": "pnpm build:cjs -- --watch",
+        "build:es": "tsc --project tsconfig.es.build.json",
+        "build:cjs": "tsc --project tsconfig.cjs.build.json",
+        "build": "pnpm build:es && pnpm build:cjs"
+    },
+    "devDependencies": {
+        "@best-design/core": "workspace:^",
+        "@emotion/hash": "^0.9.1",
+        "@types/react": "^18.2.22",
+        "@types/react-dom": "^18.2.7",
+        "eslint-plugin-prettier": "^4.2.1",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "rimraf": "^3.0.2",
+        "typescript": "^5.0.4"
+    },
+    "sideEffects": [
+        "**/*.css",
+        "**/*.less",
+        "**/*.sass",
+        "**/*.scss"
+    ],
+    "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
+    },
+    "files": [
+        "dist",
+        "es",
+        "lib",
+        "src",
+        "package.json",
+        "README.md"
+    ]
+}
