@@ -1,22 +1,52 @@
 {
     "name": "@best-design/button",
-    "version": "0.0.1",
     "main": "lib/index.js",
     "module": "es/index.js",
     "typings": "es/index.d.ts",
+    "unpkg": "dist/button.min.js",
     "scripts": {
-        "dev:es": "pnpm build:es -- --watch",
-        "dev:cjs": "pnpm build:cjs -- --watch",
-        "build:es": "tsc --project tsconfig.es.build.json",
-        "build:cjs": "tsc --project tsconfig.cjs.build.json",
-        "build": "pnpm build:es && pnpm build:cjs"
+        "clean": "best-tools clean",
+        "build:umd": "best-tools build --type umd",
+        "build:cjs": "best-tools build --type cjs",
+        "build:esm": "best-tools build --type esm",
+        "build": "father build",
+        "extend-package-json": "best-tools extend-package-json"
     },
+    "version": "1.0.0",
+    "description": "A best react ui components for button.",
+    "keywords": [
+        "best",
+        "bestlyg",
+        "component",
+        "components",
+        "design",
+        "framework",
+        "frontend",
+        "react",
+        "react-component",
+        "ui",
+        "button"
+    ],
+    "contributors": [
+        "bestlyg@foxmail.com"
+    ],
+    "homepage": "https://bestlyg.com",
+    "bugs": {
+        "url": "https://github.com/bestlyg/bestlyg/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/bestlyg/bestlyg/packages/best"
+    },
+    "license": "MIT",
     "devDependencies": {
         "@best-design/core": "workspace:^",
+        "@best-design/tools": "workspace:*",
         "@emotion/hash": "^0.9.1",
         "@types/react": "^18.2.22",
         "@types/react-dom": "^18.2.7",
         "eslint-plugin-prettier": "^4.2.1",
+        "father": "^4.3.7",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "rimraf": "^3.0.2",

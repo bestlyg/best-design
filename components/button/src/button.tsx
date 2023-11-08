@@ -1,5 +1,5 @@
-import clsx from '@best/core/es/deps/clsx';
-import { useConfigContext } from '@best/core/es/config-provider';
+import clsx from '@best-design/core/es/deps/clsx';
+import { useConfigContext } from '@best-design/core/es/config-provider';
 import { version } from './version';
 import { forwardRef } from 'react';
 import { ButtonProps } from './interface';
