@@ -7,45 +7,11 @@ import * as changeCase from 'change-case';
 import LessAutoprefix from 'less-plugin-autoprefix';
 import NpmImportPlugin from 'less-plugin-npm-import';
 import LessPluginFunctions from 'less-plugin-functions';
+import { getAbsolutePath, getLibs, componentsPath, packagesPath, resolve } from '../scripts/utils';
 
 const npmImport = new NpmImportPlugin({ prefix: '~' });
 const autoprefix = new LessAutoprefix();
 const lessPluginFunctions = new LessPluginFunctions();
-
-const resolve = (...p: string[]) => path.resolve(__dirname, '../', ...p);
-const componentsPath = resolve('components');
-const packagesPath = resolve('packages');
-function aliasLibs() {
-    const o: Record<string, string> = {};
-    for (const dir of fs.readdirSync(componentsPath)) {
-        const p = resolve(componentsPath, dir);
-        const lib = require(resolve(p, 'package.json')).name;
-        o[lib] = p;
-    }
-    for (const dir of fs.readdirSync(packagesPath)) {
-        const p = resolve(packagesPath, dir);
-        const lib = require(resolve(p, 'package.json')).name;
-        o[lib] = p;
-    }
-    return o;
-}
-
-function defineVersion() {
-    const o: Record<string, string> = {};
-    for (const dir of fs.readdirSync(componentsPath)) {
-        const p = resolve(componentsPath, dir);
-        const pkgInfo = require(resolve(p, 'package.json'));
-        const lib = pkgInfo.name;
-        o[`VERSION_${changeCase.constantCase(lib)}`] = JSON.stringify(hash(pkgInfo.version));
-    }
-    for (const dir of fs.readdirSync(packagesPath)) {
-        const p = resolve(packagesPath, dir);
-        const pkgInfo = require(resolve(p, 'package.json'));
-        const lib = pkgInfo.name;
-        o[`VERSION_${changeCase.constantCase(lib)}`] = JSON.stringify(hash(pkgInfo.version));
-    }
-    return o;
-}
 
 const lessRegex = /\.less$/;
 const lessModuleRegex = /\.module\.less$/;
@@ -80,9 +46,6 @@ function getUse(cssModule: boolean) {
     ];
 }
 
-function getAbsolutePath(value: string): any {
-    return path.dirname(require.resolve(path.join(value, 'package.json')));
-}
 const config: StorybookConfig = {
     stories: [
         resolve('stories/**/*.mdx'),
@@ -100,7 +63,7 @@ const config: StorybookConfig = {
         getAbsolutePath('@storybook/addon-styling-webpack')
     ],
     framework: {
-        name: getAbsolutePath('@storybook/react-webpack5'),
+        name: getAbsolutePath('@storybook/react-webpack5') as any,
         options: {}
     },
     typescript: {
@@ -112,11 +75,14 @@ const config: StorybookConfig = {
     webpackFinal(config) {
         config.plugins?.push(
             new webpack.DefinePlugin({
-                ...defineVersion()
+                ...getLibs().reduce((o, { packageJson: { name, version } }) => {
+                    o[`VERSION_${changeCase.constantCase(name)}`] = JSON.stringify(hash(version));
+                    return o;
+                }, {})
             })
         );
-        for (const [k, v] of Object.entries(aliasLibs())) {
-            config.resolve!.alias![k] = v;
+        for (const lib of getLibs()) {
+            config.resolve!.alias![lib.packageJson.name] = lib.dirPath;
         }
         config.resolve!.alias!['react'] = getAbsolutePath('react');
         config.resolve!.alias!['react-dom'] = getAbsolutePath('react-dom');
@@ -134,7 +100,6 @@ const config: StorybookConfig = {
         );
         // console.log(config);
         // config.cache = false;
-        console.log(defineVersion());
         return config;
     },
     async babel(config, { configType }) {

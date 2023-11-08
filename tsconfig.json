@@ -1,20 +1,16 @@
 {
+    "extends": "./tsconfig.base.json",
     "compilerOptions": {
-        "baseUrl": ".",
-        "target": "ESNext",
-        "useDefineForClassFields": false,
-        "experimentalDecorators": true,
-        "resolveJsonModule": true,
-        "esModuleInterop": true,
-        "moduleResolution": "node",
-        "skipLibCheck": true,
-        "module": "commonjs",
-        "jsx": "react-jsx",
-        "paths": {
-            "@/*": ["src/*"],
-            "@best/*": ["components/*", "packages/*"]
-        },
-        "types": ["node"]
+        "module": "commonjs"
     },
-    "include": ["scripts/**/*.ts", "scripts/**/*.tsx", "stories/**/*.ts", "stories/**/*.tsx"]
+    "include": [
+        "scripts/**/*.ts",
+        "scripts/**/*.tsx",
+        "stories/**/*.ts",
+        "stories/**/*.tsx",
+        ".storybook/**/*.ts",
+        ".storybook/**/*.tsx",
+        "jest.config.ts",
+        ".fatherrc.base.ts"
+    ]
 }

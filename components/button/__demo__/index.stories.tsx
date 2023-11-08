@@ -17,6 +17,10 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
+    args: {
+      containerProps: { className: 'container' },
+      children: 'child'
+    },
     render: function Render(args) {
         const [props, updateArgs] = useArgs();
         console.log('storyBook render, ', args, useArgs());
