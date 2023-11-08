@@ -10,14 +10,18 @@ function aliasLibs() {
     for (const dir of fs.readdirSync(componentsPath)) {
         const p = resolve(componentsPath, dir);
         const lib = require(resolve(p, 'package.json')).name;
-        o[`^${lib}$`] = p;
+        o[`^${lib}$`] = `${p}/src`;
     }
     for (const dir of fs.readdirSync(packagesPath)) {
         const p = resolve(packagesPath, dir);
         const lib = require(resolve(p, 'package.json')).name;
-        o[`^${lib}$`] = p;
+        o[`^${lib}$`] = `${p}/src`;
     }
     return o;
+}
+
+function getAbsolutePath(value: string): any {
+    return path.dirname(require.resolve(path.join(value, 'package.json')));
 }
 
 export default async (): Promise<JestConfigWithTsJest> => {
@@ -39,13 +43,16 @@ export default async (): Promise<JestConfigWithTsJest> => {
         ],
         moduleNameMapper: {
             '/\\.(css|less)$/': 'identity-obj-proxy',
+            '^react$': getAbsolutePath('react'),
+            '^react-dom$': getAbsolutePath('react-dom'),
             ...aliasLibs()
         },
-        testEnvironmentOptions: {
-            url: 'http://localhost'
-        },
+        // testEnvironmentOptions: {
+        //     url: 'http://localhost'
+        // },
         transform: {
-            '\\.tsx?$': './tests/code-transformer.js'
+            '\\.tsx?$': './tests/code-transformer.js',
+            '\\.jsx?$': './tests/code-transformer.js'
         }
     };
 };

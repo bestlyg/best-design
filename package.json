@@ -11,6 +11,7 @@
         "format:ci": "pretty-quick --since HEAD~1",
         "format": "pretty-quick --staged",
         "commit": "cz",
+        "commit:auto": "git add -A && pnpm commit",
         "storybook": "storybook dev -p 6006 --no-open",
         "build-storybook": "storybook build",
         "test": "jest"
@@ -51,6 +52,7 @@
         "@types/webpack": "^5.28.4",
         "axios": "^0.27.2",
         "babel-jest": "29.7.0",
+        "babel-preset-jest": "^29.6.3",
         "chalk": "^5.3.0",
         "change-case": "^4.1.2",
         "commitizen": "4.2.5",
@@ -91,5 +93,8 @@
         "commitizen": {
             "path": "cz-conventional-changelog"
         }
+    },
+    "dependencies": {
+        "@babel/core": "^7.23.0"
     }
 }

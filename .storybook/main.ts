@@ -121,7 +121,7 @@ const config: StorybookConfig = {
         config.resolve!.alias!['react'] = getAbsolutePath('react');
         config.resolve!.alias!['react-dom'] = getAbsolutePath('react-dom');
         console.log(config.resolve!.alias);
-        (config as any).module.rules.push(
+        config.module?.rules?.push(
             {
                 test: lessRegex,
                 exclude: lessModuleRegex,
