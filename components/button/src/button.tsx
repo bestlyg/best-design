@@ -1,8 +1,9 @@
 import clsx from '@best-design/core/es/deps/clsx';
 import { useConfigContext } from '@best-design/core/es/config-provider';
-import { version } from './version';
 import { forwardRef } from 'react';
 import { ButtonProps } from './interface';
+
+declare const VERSION_BEST_DESIGN_BUTTON: string;
 
 function Button(props: ButtonProps, ref: React.ForwardedRef<HTMLButtonElement>) {
     const {
@@ -15,7 +16,7 @@ function Button(props: ButtonProps, ref: React.ForwardedRef<HTMLButtonElement>) 
     return (
         <button
             ref={ref}
-            data-version={version}
+            data-v={VERSION_BEST_DESIGN_BUTTON}
             {...containerProps}
             className={clsx(prefixCls, `${prefixCls}-${size}`, containerProps.className)}
         >

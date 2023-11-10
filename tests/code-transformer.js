@@ -20,7 +20,6 @@ module.exports = {
                 presetTs
             ]
         });
-        console.log("transform2", result)
         return result || src;
     }
 };

@@ -10,7 +10,6 @@
         "stories/**/*.tsx",
         ".storybook/**/*.ts",
         ".storybook/**/*.tsx",
-        "jest.config.ts",
-        ".fatherrc.base.ts"
+        "./*.ts",
     ]
 }

@@ -1,9 +1,7 @@
 import type { StorybookConfig } from '@storybook/react-webpack5';
-import path from 'path';
-import fs from 'fs-extra';
 import webpack from 'webpack';
 import hash from '@emotion/hash';
-import * as changeCase from 'change-case';
+import { constantCase } from 'change-case';
 import LessAutoprefix from 'less-plugin-autoprefix';
 import NpmImportPlugin from 'less-plugin-npm-import';
 import LessPluginFunctions from 'less-plugin-functions';
@@ -47,14 +45,22 @@ function getUse(cssModule: boolean) {
 }
 
 const config: StorybookConfig = {
-    stories: [
-        resolve('stories/**/*.mdx'),
-        resolve('stories/**/*.stories.@(js|jsx|mjs|ts|tsx)'),
-        resolve(componentsPath, '**/__demo__', '**/*.mdx'),
-        resolve(componentsPath, '**/__demo__', '**/*.stories.@(js|jsx|mjs|ts|tsx)'),
-        resolve(packagesPath, '**/__demo__', '**/*.mdx'),
-        resolve(packagesPath, '**/__demo__', '**/*.stories.@(js|jsx|mjs|ts|tsx)')
-    ],
+    stories: process.env.MATERIAL_CENTER_DEMO_COMPONENT
+        ? [
+              resolve(
+                  ...process.env.MATERIAL_CENTER_DEMO_COMPONENT.split('/'),
+                  '**/__demo__',
+                  '**/*.stories.@(js|jsx|mjs|ts|tsx)'
+              )
+          ]
+        : [
+              resolve('stories/**/*.mdx'),
+              resolve('stories/**/*.stories.@(js|jsx|mjs|ts|tsx)'),
+              resolve(componentsPath, '**/__demo__', '**/*.mdx'),
+              resolve(componentsPath, '**/__demo__', '**/*.stories.@(js|jsx|mjs|ts|tsx)'),
+              resolve(packagesPath, '**/__demo__', '**/*.mdx'),
+              resolve(packagesPath, '**/__demo__', '**/*.stories.@(js|jsx|mjs|ts|tsx)')
+          ],
     addons: [
         getAbsolutePath('@storybook/addon-links'),
         getAbsolutePath('@storybook/addon-essentials'),
@@ -76,7 +82,7 @@ const config: StorybookConfig = {
         config.plugins?.push(
             new webpack.DefinePlugin({
                 ...getLibs().reduce((o, { packageJson: { name, version } }) => {
-                    o[`VERSION_${changeCase.constantCase(name)}`] = JSON.stringify(hash(version));
+                    o[`VERSION_${constantCase(name)}`] = JSON.stringify(hash(version));
                     return o;
                 }, {})
             })

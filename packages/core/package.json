@@ -1,13 +1,14 @@
 {
-    "best-tools": {
+    "extension": {
         "extends": [
             "../../package.base.json"
         ],
         "vars": {
-            "name": "core"
+            "name": "core",
+            "type": "packages"
         },
         "meta": {
-            "dependencies": {}
+            "version": "1.0.0"
         }
     },
     "name": "@best-design/core",
@@ -15,13 +16,15 @@
     "description": "A best react ui components for core.",
     "main": "lib/index.js",
     "scripts": {
+        "extend-package-json": "extend-package-json",
         "clean": "best-tools clean",
         "build": "father build",
         "update-package-json": "best-tools update-package-json",
         "update-version": "best-tools update-version",
         "build:umd": "best-tools build --type umd",
         "build:cjs": "best-tools build --type cjs",
-        "build:esm": "best-tools build --type esm"
+        "build:esm": "best-tools build --type esm",
+        "storybook": "MATERIAL_CENTER_DEMO_COMPONENT=packages/core pnpm storybook -w"
     },
     "keywords": [
         "best",
@@ -45,12 +48,18 @@
         "zustand": "^4.4.1"
     },
     "devDependencies": {
-        "@best-design/tools": "workspace:*",
-        "@types/react": "^18.2.0",
-        "@types/react-dom": "^18.2.0",
+        "package-json-extension": "^0.0.5",
+        "@best-design/tools": "workspace:^",
+        "@types/react": "^18.2.22",
+        "@types/react-dom": "^18.2.7",
         "father": "^4.3.7",
         "react": "^18.2.0",
-        "react-dom": "^18.2.0"
+        "react-dom": "^18.2.0",
+        "@emotion/hash": "^0.9.1",
+        "eslint-plugin-prettier": "^4.2.1",
+        "less-plugin-get-package": "^0.0.1",
+        "rimraf": "^3.0.2",
+        "typescript": "^5.0.4"
     },
     "contributors": [
         "bestlyg@foxmail.com"
@@ -60,23 +69,32 @@
     "unpkg": "dist/core.min.js",
     "homepage": "https://bestlyg.com",
     "bugs": {
-        "url": "https://github.com/bestlyg/bestlyg/issues"
+        "url": "https://github.com/bestlyg/best-design/issues"
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/bestlyg/bestlyg/packages/best"
+        "url": "https://github.com/bestlyg/best-design"
     },
     "publishConfig": {
-        "registry": "https://registry.npmjs.org/"
+        "registry": "https://registry.npmjs.org/",
+        "access": "public"
     },
     "files": [
         "dist",
         "es",
         "lib",
-        "src"
+        "src",
+        "package.json",
+        "README.md"
     ],
     "peerDependencies": {
         "react": ">=16.9.0",
         "react-dom": ">=16.9.0"
-    }
+    },
+    "sideEffects": [
+        "**/*.css",
+        "**/*.less",
+        "**/*.sass",
+        "**/*.scss"
+    ]
 }

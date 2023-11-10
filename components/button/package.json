@@ -1,18 +1,26 @@
 {
+    "extension": {
+        "extends": [
+            "../../package.base.json"
+        ],
+        "vars": {
+            "name": "button",
+            "type": "components"
+        },
+        "meta": {
+            "version": "1.0.0"
+        }
+    },
     "name": "@best-design/button",
     "main": "lib/index.js",
     "module": "es/index.js",
     "typings": "es/index.d.ts",
     "unpkg": "dist/button.min.js",
     "scripts": {
-        "clean": "best-tools clean",
-        "build:umd": "best-tools build --type umd",
-        "build:cjs": "best-tools build --type cjs",
-        "build:esm": "best-tools build --type esm",
+        "extend-package-json": "extend-package-json",
         "build": "father build",
-        "extend-package-json": "best-tools extend-package-json"
+        "storybook": "MATERIAL_CENTER_DEMO_COMPONENT=components/button pnpm -w storybook"
     },
-    "version": "1.0.0",
     "description": "A best react ui components for button.",
     "keywords": [
         "best",
@@ -32,20 +40,22 @@
     ],
     "homepage": "https://bestlyg.com",
     "bugs": {
-        "url": "https://github.com/bestlyg/bestlyg/issues"
+        "url": "https://github.com/bestlyg/best-design/issues"
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/bestlyg/bestlyg/packages/best"
+        "url": "https://github.com/bestlyg/best-design"
     },
     "license": "MIT",
     "devDependencies": {
         "@best-design/core": "workspace:^",
-        "@best-design/tools": "workspace:*",
+        "@best-design/tools": "workspace:^",
         "@emotion/hash": "^0.9.1",
         "@types/react": "^18.2.22",
         "@types/react-dom": "^18.2.7",
         "eslint-plugin-prettier": "^4.2.1",
+        "package-json-extension": "^0.0.5",
+        "less-plugin-get-package": "^0.0.1",
         "father": "^4.3.7",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
@@ -69,5 +79,6 @@
         "src",
         "package.json",
         "README.md"
-    ]
+    ],
+    "version": "1.0.0"
 }

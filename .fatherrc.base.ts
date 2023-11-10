@@ -1,5 +1,5 @@
 import { defineConfig } from 'father';
-import { getLibs, getAbsolutePath } from './scripts/utils';
+import { baseDefines } from './scripts/utils';
 
 export default defineConfig({
     esm: { input: 'src', output: 'es', transformer: 'babel' },
@@ -19,5 +19,8 @@ export default defineConfig({
     prebundle: {
         deps: {}
     },
-    sourcemap: true
+    sourcemap: true,
+    define: {
+        ...baseDefines
+    }
 });

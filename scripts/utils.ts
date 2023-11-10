@@ -1,5 +1,7 @@
 import path from 'path';
 import fs from 'fs-extra';
+import hash from '@emotion/hash';
+import { constantCase } from 'change-case';
 
 export const LOGO = `***********************************************************
 *      ____  ______  _____ _______ _  __     _______      *
@@ -13,7 +15,10 @@ export const LOGO = `***********************************************************
 
 export const resolve = (...p: string[]) => path.resolve(__dirname, '../', ...p);
 
+export const CWD = process.cwd();
+
 export const packageFileName = 'package.json';
+export const packageJson = require(resolve(CWD, packageFileName));
 export const componentsPath = resolve('components');
 export const packagesPath = resolve('packages');
 
@@ -42,3 +47,10 @@ export function getLibs() {
     }
     return arr;
 }
+
+export const baseDefines: Record<string, any> = {
+    ...getLibs().reduce((o, { packageJson: { name, version } }) => {
+        o[`VERSION_${constantCase(name)}`] = JSON.stringify(hash(version));
+        return o;
+    }, {})
+};
