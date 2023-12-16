@@ -4,11 +4,9 @@
     "description": "A tools for the best libraries.",
     "main": "index.js",
     "bin": {
-        "best-tools": "./bin/best-tools.js"
+        "best": "./bin/best.js"
     },
     "scripts": {
-        "tools": "ts-node src/index.ts",
-        "build": "pnpm tools build --type CJS"
     },
     "dependencies": {
         "@babel/core": "^7.23.0",
