@@ -1,9 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useArgs } from '@storybook/preview-api';
 import { Button } from '@best-design/button/src/button';
-import '@best-design/button/src/style/index.less';
 
-const meta = {
+const meta: Meta<typeof Button> = {
     title: 'Best-Design/Button',
     component: Button,
     parameters: {
@@ -18,8 +17,8 @@ type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
     args: {
-      containerProps: { className: 'container' },
-      children: 'child'
+        className: 'container',
+        children: 'child'
     },
     render: function Render(args) {
         const [props, updateArgs] = useArgs();

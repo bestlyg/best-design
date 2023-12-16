@@ -1,31 +1,33 @@
+import { forwardRef, useEffect } from 'react';
 import clsx from '@best-design/core/es/deps/clsx';
 import { useConfigContext } from '@best-design/core/es/config-provider';
-import { forwardRef } from 'react';
 import { ButtonProps } from './interface';
+import './style/button.less';
 
-declare const VERSION_BEST_DESIGN_BUTTON: string;
-
-function Button(props: ButtonProps, ref: React.ForwardedRef<HTMLButtonElement>) {
+function Button(props: ButtonProps, ref: React.ForwardedRef<HTMLButtonElement>): JSX.Element {
     const {
         prefix,
         defaultConfig: { size: defaultSize }
     } = useConfigContext();
+    useEffect(() => {
+        console.log('Button first render');
+    }, []);
     const prefixCls = `${prefix}-button`;
-    const { containerProps = {}, size: propsSize } = props;
+    const { size: propsSize, className, ...resrProps } = props;
     const size = propsSize ?? defaultSize ?? 'medium';
     return (
         <button
             ref={ref}
-            data-v={VERSION_BEST_DESIGN_BUTTON}
-            {...containerProps}
-            className={clsx(prefixCls, `${prefixCls}-${size}`, containerProps.className)}
+            data-v={process.env.VERSION_BEST_DESIGN_BUTTON}
+            {...resrProps}
+            className={clsx(prefixCls, `${prefixCls}-${size}`, className)}
         >
             button-{props.children}
         </button>
     );
 }
 
-const ForwardRefButton = forwardRef<HTMLButtonElement, ButtonProps>(Button);
+const ForwardRefButton = forwardRef<HTMLButtonElement, ButtonProps>(Button) as typeof Button;
 
 export { ForwardRefButton as Button };
 export type { ButtonProps };

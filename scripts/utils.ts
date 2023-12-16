@@ -50,7 +50,7 @@ export function getLibs() {
 
 export const baseDefines: Record<string, any> = {
     ...getLibs().reduce((o, { packageJson: { name, version } }) => {
-        o[`VERSION_${constantCase(name)}`] = JSON.stringify(hash(version));
+        o[`process.env.VERSION_${constantCase(name)}`] = hash(version);
         return o;
     }, {})
 };

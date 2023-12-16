@@ -1,11 +1,9 @@
 import type { StorybookConfig } from '@storybook/react-webpack5';
 import webpack from 'webpack';
-import hash from '@emotion/hash';
-import { constantCase } from 'change-case';
 import LessAutoprefix from 'less-plugin-autoprefix';
 import NpmImportPlugin from 'less-plugin-npm-import';
 import LessPluginFunctions from 'less-plugin-functions';
-import { getAbsolutePath, getLibs, componentsPath, packagesPath, resolve } from '../scripts/utils';
+import { getAbsolutePath, getLibs, componentsPath, packagesPath, resolve, baseDefines } from '../scripts/utils';
 
 const npmImport = new NpmImportPlugin({ prefix: '~' });
 const autoprefix = new LessAutoprefix();
@@ -81,10 +79,9 @@ const config: StorybookConfig = {
     webpackFinal(config) {
         config.plugins?.push(
             new webpack.DefinePlugin({
-                ...getLibs().reduce((o, { packageJson: { name, version } }) => {
-                    o[`VERSION_${constantCase(name)}`] = JSON.stringify(hash(version));
-                    return o;
-                }, {})
+                ...Object.fromEntries(
+                    Object.entries(baseDefines).map(([k, v]) => [k, JSON.stringify(v)])
+                )
             })
         );
         for (const lib of getLibs()) {

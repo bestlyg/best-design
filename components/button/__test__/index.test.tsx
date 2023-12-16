@@ -1,5 +1,6 @@
 import { cleanup, render } from '@testing-library/react';
-import Button from '@best-design/button'
+import Button from '@best-design/button';
+import '@testing-library/jest-dom';
 
 afterEach(cleanup);
 

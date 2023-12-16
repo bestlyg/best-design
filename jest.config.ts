@@ -1,5 +1,5 @@
 import type { JestConfigWithTsJest } from 'ts-jest';
-import { getLibs, getAbsolutePath } from './scripts/utils';
+import { getLibs, getAbsolutePath, resolve } from './scripts/utils';
 
 export default async (): Promise<JestConfigWithTsJest> => {
     return {
@@ -23,7 +23,7 @@ export default async (): Promise<JestConfigWithTsJest> => {
             '^react$': getAbsolutePath('react'),
             '^react-dom$': getAbsolutePath('react-dom'),
             ...getLibs().reduce((o, { packageJson: { name }, dirPath }) => {
-                o[`^${name}$`] = dirPath;
+                o[`^${name}$`] = resolve(dirPath, 'src');
                 return o;
             }, {})
         },
@@ -32,7 +32,9 @@ export default async (): Promise<JestConfigWithTsJest> => {
         // },
         transform: {
             '\\.tsx?$': './tests/code-transformer.js',
-            '\\.jsx?$': './tests/code-transformer.js'
+            '\\.jsx?$': './tests/code-transformer.js',
+            '\\.css$': './tests/style-transformer.js',
+            '\\.less$': './tests/style-transformer.js'
         }
     };
 };
