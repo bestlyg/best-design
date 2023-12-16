@@ -59,8 +59,6 @@
         "commitizen": "4.2.5",
         "css-loader": "6.8.1",
         "dayjs": "^1.11.10",
-        "eslint": "8.20.0",
-        "eslint-plugin-storybook": "0.6.15",
         "father": "^4.3.7",
         "file-loader": "^6.2.0",
         "fs-extra": "11.1.1",

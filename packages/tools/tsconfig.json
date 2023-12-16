@@ -1,18 +1,19 @@
 {
     "compilerOptions": {
-        "baseUrl": ".",
-        "target": "ESNext",
-        "useDefineForClassFields": false,
-        "experimentalDecorators": true,
-        "resolveJsonModule": true,
+        "module": "ESNext",
+        "outDir": "./lib",
+        "rootDir": "./src",
+        "allowJs": true,
+        "sourceMap": true,
+        "inlineSources": true,
+        "importHelpers": true,
+        "noImplicitAny": false,
+        "declaration": true,
         "esModuleInterop": true,
-        "moduleResolution": "node",
         "skipLibCheck": true,
-        "module": "commonjs",
-        "paths": {
-            "@/*": ["src/*"]
-        },
-        "types": ["node"]
+        "moduleResolution": "node",
+        "target": "ESNext"
     },
-    "include": ["src/**/*.ts"]
+    "include": ["src/**/*.ts", "src/**/*.js"],
+    "exclude": ["node_modules", "lib"]
 }
