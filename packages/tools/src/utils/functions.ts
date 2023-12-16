@@ -12,38 +12,30 @@ export const getEnv = (s: string) => process.env[`M4B_CLI_${s}`];
 export async function loadCommands({
     program,
     commandDirs,
-    filter = () => false
+    filterFn = () => true
 }: {
     program: Command;
     commandDirs: string[];
-    filter?: (filePath: string) => boolean;
+    filterFn?: (filePath: string) => boolean | Promise<boolean>;
 }) {
-    
-    return Promise.allSettled(
-        commandDirs
-            .map(commandDir => {
-                if (!fs.existsSync(commandDir) || !fs.statSync(commandDir).isDirectory()) return [];
-                return fs
-                    .readdirSync(commandDir)
-                    .filter(entry => filter(resolve(commandDir, entry)))
-                    .map(entry => {
-                        return require(resolve(commandDir, entry)).default;
-                    })
-                    .filter(mod => typeof mod === 'function');
-            })
-            .flat()
-            .map(fn => {
-                return Promise.resolve().then(() => fn(program));
-            })
-    ).then(list => {
-        const rejectedList = list.filter(item => item.status === 'rejected');
-        if (rejectedList.length > 0) {
-            print.warn('Failed to load commands.');
-            rejectedList.forEach((item: PromiseRejectedResult) => {
-                if (item.reason) print.warn(item.reason);
-            });
+    const files = (
+        await Promise.all(
+            commandDirs.map(async commandDir =>
+                (await fs.readdir(commandDir)).map(p => resolve(commandDir, p))
+            )
+        )
+    ).flat();
+    const filteredFiles = [];
+    for (const file of files) {
+        if (await filterFn(file)) {
+            filteredFiles.push(file);
         }
-    });
+    }
+    const modules = await Promise.all(filteredFiles.map(async file => import(file)));
+    for (const mod of modules) {
+        const fn = mod.default;
+        fn(program);
+    }
 }
 
 export function precheckArgs({

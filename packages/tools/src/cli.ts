@@ -1,6 +1,9 @@
 import { Command } from 'commander';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { packageInfo } from './utils/constants.js';
 import { error } from './utils/print.js';
+import { loadCommands, resolve } from './utils/functions.js';
 
 async function main() {
     const program = new Command();
@@ -8,14 +11,13 @@ async function main() {
     program.description(packageInfo.description);
     program.version(packageInfo.version);
 
-    const fn = (await import('./command/health-check.js')).default;
-    fn(program);
-
-    // await loadCommands({
-    //     commandDirs: [resolve(__dirname, 'command')],
-    //     filter: filePath => path.extname(filePath) === '.js' || fs.statSync(filePath).isDirectory(),
-    //     program
-    // });
+    // const fn = (await import('./command/health-check.js')).default;
+    // fn(program);
+    await loadCommands({
+        commandDirs: [resolve(path.dirname(fileURLToPath(import.meta.url)), 'command')],
+        filterFn: async filePath => path.extname(filePath) === '.js',
+        program
+    });
 
     program.parse();
 }
