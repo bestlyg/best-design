@@ -1,8 +1,8 @@
 import chalk from 'chalk';
+import { PREFIX } from './constants.js';
+import { mount } from './functions.js';
 
-export const PREFIX = 'M4B-CLI';
-
-function log(...args) {
+function log(...args: any[]) {
     console.log(...args);
 }
 
@@ -25,44 +25,34 @@ function list(info: Record<string, any>) {
     }
 }
 
-export const print = _print as typeof _print & {
-    info: typeof _print;
-    warn: typeof _print;
-    error: typeof _print;
-    success: typeof _print;
-    log: typeof log;
-    chalk: typeof chalk;
-    divider: typeof divider;
-    list: typeof list;
-};
-
-print.info = _print.bind(null, 'gray', PREFIX);
-print.warn = _print.bind(null, 'yellow', PREFIX);
-print.error = _print.bind(null, 'red', PREFIX);
-print.success = _print.bind(null, 'green', PREFIX);
-print.log = log;
-print.chalk = chalk;
-print.divider = divider;
-print.list = list;
-
-export function error(msg: string, ...errs: any[]) {
-    print.error(msg);
-    errs.forEach(err => {
-        if (typeof err === 'string') {
-            print.error(err);
-        } else {
-            console.error(err);
-        }
-    });
-}
-
 /**
  * Print divider
  * @param {'info' | 'warn' | 'success' | 'error'} level
  */
 function divider(level = 'info') {
-    const logger = print[level] || print.info;
-    logger(
-        '---------------------------------------------------------------------------------------'
-    );
+    const logger = print[level] ?? print.info;
+    logger('-'.repeat(process.stdout.columns));
 }
+
+function errorWithStack(msg: string, ...errors: any[]) {
+    print.error(msg);
+    for (const err of errors) {
+        if (err instanceof Error) {
+            console.error(err);
+        } else {
+            print.error(err);
+        }
+    }
+}
+
+export const print = mount(_print, {
+    info: _print.bind(null, 'gray', PREFIX) as typeof _print,
+    warn: _print.bind(null, 'yellow', PREFIX) as typeof _print,
+    error: _print.bind(null, 'red', PREFIX) as typeof _print,
+    success: _print.bind(null, 'green', PREFIX) as typeof _print,
+    log,
+    chalk,
+    divider,
+    list,
+    errorWithStack
+});

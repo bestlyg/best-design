@@ -1,11 +1,12 @@
 import { Command } from 'commander';
+import { print } from '../utils/print.js';
 
 export default function (program: Command) {
-    console.log('health check');
+    print.success('Health check is connected.');
     program
         .command(`health-check`)
         .description(`Health check.`)
         .action(() => {
-            console.log('Health check');
+            print.success('Health check success.');
         });
 }

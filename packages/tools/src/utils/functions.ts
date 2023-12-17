@@ -1,13 +1,14 @@
 import { Command } from 'commander';
 import fs from 'fs-extra';
-import { capitalCase } from 'change-case';
 import path from 'node:path';
-import { print } from './print.js';
 
-export const resolve = (...p: string[]) =>
-    path.resolve(path.dirname(import.meta.url), '../..', ...p);
+export function resolve(...p: string[]) {
+    return path.resolve(path.dirname(import.meta.url), '../..', ...p);
+}
 
-export const getEnv = (s: string) => process.env[`M4B_CLI_${s}`];
+export function getEnv(s: string) {
+    return process.env[`BEST_CLI_${s}`];
+}
 
 export async function loadCommands({
     program,
@@ -20,51 +21,33 @@ export async function loadCommands({
 }) {
     const files = (
         await Promise.all(
-            commandDirs.map(async commandDir =>
-                (await fs.readdir(commandDir)).map(p => resolve(commandDir, p))
-            )
+            commandDirs.map(async commandDir => {
+                const files = await fs.readdir(commandDir);
+                return files.map(p => resolve(commandDir, p));
+            })
         )
     ).flat();
-    const filteredFiles = [];
-    for (const file of files) {
-        if (await filterFn(file)) {
-            filteredFiles.push(file);
-        }
-    }
-    const modules = await Promise.all(filteredFiles.map(async file => import(file)));
+    const modules = (
+        await Promise.all(
+            files.map(async file => {
+                const flag = await filterFn(file);
+                const module = flag ? await import(file) : null;
+                return [module, flag] as [{ default: Function }, boolean];
+            })
+        )
+    )
+        .filter(([, flag]) => flag)
+        .map(([module]) => module);
     for (const mod of modules) {
         const fn = mod.default;
         fn(program);
     }
 }
 
-export function precheckArgs({
-    program,
-    args,
-    checkList
-}: {
-    program: Command;
-    args: Record<string, any>;
-    checkList: {
-        key: string;
-        required?: boolean;
-        message?: string;
-        validator?: (args: Parameters<typeof precheckArgs>[0]['args']) => boolean;
-    }[];
-}): boolean {
-    // if (args.help) {
-    //   program.help();
-    //   return false;
-    // }
-    for (const { key, required, message, validator = () => true } of checkList) {
-        if (required && args[key] === undefined) {
-            if (message) print.error(message);
-            else print.error(`${capitalCase(key)} is required.`);
-            return false;
-        } else if (!validator(args)) {
-            print.error(message);
-            return false;
-        }
+export function mount<O, T>(base: O, mountRecord: T) {
+    const result = base as O & T;
+    for (const [k, v] of Object.entries(mountRecord)) {
+        result[k] = v;
     }
-    return true;
+    return result;
 }
