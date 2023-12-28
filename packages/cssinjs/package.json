@@ -4,16 +4,16 @@
             "../../package.base.json"
         ],
         "vars": {
-            "name": "core",
+            "name": "cssinjs",
             "type": "packages"
         },
         "meta": {
             "version": "1.0.0"
         }
     },
-    "name": "@best-design/core",
+    "name": "@best-design/cssinjs",
     "version": "1.0.0",
-    "description": "A best react ui components for core.",
+    "description": "A best react ui components for cssinjs.",
     "main": "lib/index.js",
     "scripts": {
         "extend-package-json": "extend-package-json",
@@ -24,7 +24,7 @@
         "build:umd": "best-tools build --type umd",
         "build:cjs": "best-tools build --type cjs",
         "build:esm": "best-tools build --type esm",
-        "storybook": "BEST_DESIGN_DEMO_COMPONENT=packages/core pnpm -w storybook"
+        "storybook": "BEST_DESIGN_DEMO_COMPONENT=packages/cssinjs pnpm -w storybook"
     },
     "keywords": [
         "best",
@@ -37,7 +37,7 @@
         "react",
         "react-component",
         "ui",
-        "core"
+        "cssinjs"
     ],
     "author": "",
     "license": "MIT",
@@ -66,7 +66,7 @@
     ],
     "module": "es/index.js",
     "typings": "es/index.d.ts",
-    "unpkg": "dist/core.min.js",
+    "unpkg": "dist/cssinjs.min.js",
     "homepage": "https://bestlyg.com",
     "bugs": {
         "url": "https://github.com/bestlyg/best-design/issues"

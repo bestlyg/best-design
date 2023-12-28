@@ -43,10 +43,10 @@ function getUse(cssModule: boolean) {
 }
 
 const config: StorybookConfig = {
-    stories: process.env.MATERIAL_CENTER_DEMO_COMPONENT
+    stories: process.env.BEST_DESIGN_DEMO_COMPONENT
         ? [
               resolve(
-                  ...process.env.MATERIAL_CENTER_DEMO_COMPONENT.split('/'),
+                  ...process.env.BEST_DESIGN_DEMO_COMPONENT.split('/'),
                   '**/__demo__',
                   '**/*.stories.@(js|jsx|mjs|ts|tsx)'
               )

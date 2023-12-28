@@ -19,7 +19,7 @@
     "scripts": {
         "extend-package-json": "extend-package-json",
         "build": "father build",
-        "storybook": "MATERIAL_CENTER_DEMO_COMPONENT=components/button pnpm -w storybook"
+        "storybook": "BEST_DESIGN_DEMO_COMPONENT=components/button pnpm -w storybook"
     },
     "description": "A best react ui components for button.",
     "keywords": [

@@ -8,7 +8,7 @@
             "unpkg": "dist/<%= vars.name %>.min.js",
             "scripts": {
                 "build": "father build",
-                "storybook": "MATERIAL_CENTER_DEMO_COMPONENT=<%= vars.type %>/<%= vars.name %> pnpm -w storybook",
+                "storybook": "BEST_DESIGN_DEMO_COMPONENT=<%= vars.type %>/<%= vars.name %> pnpm -w storybook",
                 "extend-package-json": "extend-package-json"
             },
             "description": "A best react ui components for <%= vars.name %>.",
