@@ -1,6 +1,6 @@
 import { useContext, createContext, useRef, useMemo, useEffect } from 'react';
 import { Style } from '../core';
-import { propertiesToString } from './functions';
+import { CreateStyleRule, propertiesToString, createStyleRule } from './functions';
 
 export const defaultContext = { styles: [new Style()] };
 export const Context = createContext(defaultContext);
@@ -10,17 +10,13 @@ export function useStyles(): Style[] {
     return styles;
 }
 
-export function useStyleRule(args: { style?: Style } & Parameters<Style['insertStyleRule']>[0]) {
-    const { style: _style, ...restArgs } = args;
-    const styles = useStyles();
-    const style = _style ?? styles[0];
-    style.init();
+export function useStyleRule(args: CreateStyleRule) {
     const rule = useMemo(
-        () => style.insertStyleRule(restArgs),
-        [propertiesToString(restArgs.properties ?? {}), restArgs.suffix]
+        () => createStyleRule(args),
+        [propertiesToString(args.properties ?? {}), args.suffix]
     );
-    const prevDeleteFn = usePrevious(() => rule.delete());
     useEffect(() => () => rule.delete(), []);
+    const prevDeleteFn = usePrevious(() => rule.delete());
     useEffect(() => prevDeleteFn?.(), [rule]);
     return rule;
 }

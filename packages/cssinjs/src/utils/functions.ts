@@ -18,18 +18,19 @@ export function propertiesToString(properties: CSSProperties) {
     return Object.entries(properties).reduce((s, [k, v]) => `${s}${propertyToString(k, v)};`, '');
 }
 
-export function createStyleRule({
-    suffix = '',
-    properties = {},
-    container,
-    prefix = 'css'
-}: {
+export interface CreateStyleRule {
     container: RuleContainer;
     media?: string;
     suffix?: string;
     properties?: CSSProperties;
     prefix?: string;
-}): StyleRule {
+}
+export function createStyleRule({
+    suffix = '',
+    properties = {},
+    container,
+    prefix = 'css'
+}: CreateStyleRule): StyleRule {
     const propertyStr = propertiesToString(properties);
     const hashedSelector = `${prefix}-${hash(prefix + suffix + propertyStr)}`;
     const mergedSelector = `${hashedSelector}${suffix}`;
@@ -40,5 +41,7 @@ export function createStyleRule({
         cssRule: container.cssContainer.cssRules[0] as CSSStyleRule,
         selector: hashedSelector
     });
+    ruleInstance.count += 1;
+    container.cache.set(hashedSelector, ruleInstance);
     return ruleInstance;
 }

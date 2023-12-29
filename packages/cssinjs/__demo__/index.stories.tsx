@@ -24,25 +24,14 @@ export const Primary: Story = {
     render: function Render(args) {
         const [props, updateArgs] = useArgs();
         const [val, setVal] = useState(1);
+        const [style] = useStyles();
+        style.init();
         const rule = useStyleRule({
+            container: style,
             suffix: ' .a1',
             properties: { width: val * 10, '--width': val }
         });
-        console.log(rule);
-        useEffect(() => {
-            // const style = rule.style;
-            // const sheet = style.sheet();
-            // sheet.insertRule(`
-            // @media (min-width: 768px) {
-            //     .a1 {
-            //       background: red;
-            //     }
-            //   }`);
-            // console.log(style);
-            // const rule1 = sheet.cssRules[0] as CSSMediaRule;
-            // const rule2 = sheet.cssRules[1] as CSSStyleRule;
-            // console.log(rule1, rule2);
-        }, []);
+        console.log(style);
         return (
             <Button
                 {...props}

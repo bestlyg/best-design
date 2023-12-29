@@ -1,5 +1,5 @@
 import type { CSSProperties, CSSRuleContainer } from '../types';
-import { transformStyleValue, createStyleRule } from '../utils';
+import { transformStyleValue, createStyleRule, CreateStyleRule } from '../utils';
 
 export class RuleContainer {
     cache = new Map<string, StyleRule>();
@@ -31,11 +31,6 @@ export class RuleContainer {
                 this.clearing = false;
             });
         }
-    }
-
-    insertStyleRule(args: Partial<Parameters<typeof createStyleRule>[0]>) {
-        args.container ??= this;
-        return createStyleRule(args as Parameters<typeof createStyleRule>[0]);
     }
 }
 
