@@ -8,11 +8,11 @@
             "type": "packages"
         },
         "meta": {
-            "version": "1.0.0"
+            "version": "0.0.1"
         }
     },
     "name": "@best-design/cssinjs",
-    "version": "1.0.0",
+    "version": "0.0.1",
     "description": "A best react ui components for cssinjs.",
     "main": "lib/index.js",
     "scripts": {
@@ -39,7 +39,7 @@
         "ui",
         "cssinjs"
     ],
-    "author": "",
+    "author": "bestlyg@foxmail.com",
     "license": "MIT",
     "dependencies": {
         "@emotion/hash": "^0.9.1",
