@@ -21,6 +21,6 @@ export default defineConfig({
     },
     sourcemap: true,
     define: {
-        ...baseDefines
+        ...Object.fromEntries(Object.entries(baseDefines).map(([k, v]) => [k, JSON.stringify(v)]))
     }
 });

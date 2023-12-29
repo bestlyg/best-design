@@ -1,4 +1,2 @@
-export * as deps from './deps';
-// export * as types from './types';
-export { version } from './version';
-export * from './config-provider';
+export * from './core';
+export * from './hooks';
