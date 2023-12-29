@@ -17,6 +17,7 @@ export class RuleContainer {
     }
     clear() {
         if (!this.clearing) {
+            this.clearing = true;
             requestIdleCallback(() => {
                 const ruleMap = new Map<CSSRule, StyleRule>();
                 for (const rule of this.cache.values()) {
