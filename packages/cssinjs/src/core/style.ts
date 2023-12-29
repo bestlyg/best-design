@@ -1,4 +1,5 @@
-import { RuleContainer } from "./rule";
+import { useContext, createContext } from 'react';
+import { RuleContainer } from './rule';
 
 export class Style extends RuleContainer {
     started = false;
@@ -21,4 +22,12 @@ export class Style extends RuleContainer {
             this.destroyed = true;
         }
     }
+}
+
+export const defaultContext = { styles: [new Style()] };
+export const Context = createContext(defaultContext);
+
+export function useStyles(): Style[] {
+    const { styles } = useContext(Context);
+    return styles;
 }

@@ -12,7 +12,7 @@
         }
     },
     "name": "@best-design/cssinjs",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "A best react ui components for cssinjs.",
     "main": "lib/index.js",
     "scripts": {
