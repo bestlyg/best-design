@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useArgs, useEffect, useState } from '@storybook/preview-api';
 import { Button } from '@best-design/button/src/button';
-import { Style, useStyle } from '@best-design/cssinjs/src';
+import { Style, useStyles, useRule } from '@best-design/cssinjs/src';
 
 const meta: Meta<typeof Button> = {
     title: 'Best-Design/CssInJs',
@@ -23,18 +23,9 @@ export const Primary: Story = {
     },
     render: function Render(args) {
         const [props, updateArgs] = useArgs();
-        const style = useStyle();
         const [val, setVal] = useState(1);
-        const rule = style.useRule({
-            properties: {
-                width: val * 10
-            }
-        });
-        useEffect(() => {
-            console.log(style)
-            // rule.updateStyle({ width: val * 10 });
-        }, [val]);
-        console.log('storyBook render, ', args, useArgs());
+        const rule = useRule({ suffix: ' .a1', properties: { width: val * 10, '--width': val } });
+        console.log(rule);
         return (
             <Button
                 {...props}
@@ -43,6 +34,7 @@ export const Primary: Story = {
                     setVal(val + 1);
                 }}
             >
+                <div className="a1" style={{ background: 'red' , height: 10}}></div>
                 {val}
             </Button>
         );

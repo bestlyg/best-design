@@ -1,2 +1,2 @@
 export * from './core';
-export * from './hooks';
+export { usePrevious, useRule, useStyles } from './utils';
