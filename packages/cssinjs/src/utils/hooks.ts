@@ -10,13 +10,13 @@ export function useStyles(): Style[] {
     return styles;
 }
 
-export function useRule(args: { style?: Style } & Parameters<Style['insertRule']>[0]) {
+export function useStyleRule(args: { style?: Style } & Parameters<Style['insertStyleRule']>[0]) {
     const { style: _style, ...restArgs } = args;
     const styles = useStyles();
     const style = _style ?? styles[0];
     style.init();
     const rule = useMemo(
-        () => style.insertRule(restArgs),
+        () => style.insertStyleRule(restArgs),
         [propertiesToString(restArgs.properties ?? {}), restArgs.suffix]
     );
     const prevDeleteFn = usePrevious(() => rule.delete());
