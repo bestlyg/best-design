@@ -31,7 +31,7 @@ export const Primary: Story = {
             suffix: ' .a1',
             properties: { width: val * 10, '--width': val }
         });
-        console.log(style);
+        console.log(style, rule);
         return (
             <Button
                 {...props}

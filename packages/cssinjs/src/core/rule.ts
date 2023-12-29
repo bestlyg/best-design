@@ -87,16 +87,18 @@ export function createStyleRule({
 }: CreateStyleRule): StyleRule {
     const propertyStr = propertiesToString(properties);
     const hashedSelector = `${prefix}-${hash(prefix + suffix + propertyStr)}`;
-    const mergedSelector = `${hashedSelector}${suffix}`;
-    const ruleStr = `.${mergedSelector}{${propertyStr}}`;
-    container.cssContainer.insertRule(ruleStr);
-    const ruleInstance = new StyleRule({
-        container,
-        cssRule: container.cssContainer.cssRules[0] as CSSStyleRule,
-        selector: hashedSelector
-    });
-    ruleInstance.count += 1;
-    container.cache.set(hashedSelector, ruleInstance);
+    let ruleInstance = container.cache.get(hashedSelector);
+    if (!ruleInstance) {
+        const ruleStr = `.${hashedSelector}${suffix}{${propertyStr}}`;
+        container.cssContainer.insertRule(ruleStr);
+        ruleInstance = new StyleRule({
+            container,
+            cssRule: container.cssContainer.cssRules[0] as CSSStyleRule,
+            selector: hashedSelector
+        });
+        ruleInstance.count += 1;
+        container.cache.set(hashedSelector, ruleInstance);
+    }
     return ruleInstance;
 }
 
