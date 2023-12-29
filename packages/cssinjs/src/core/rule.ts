@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo, useInsertionEffect } from 'react';
 import type { CSSProperties, CSSRuleContainer } from '../types';
 import { propertiesToString, transformStyleValue, usePrevious } from '../utils';
 import hash from '@emotion/hash';
@@ -96,9 +96,9 @@ export function createStyleRule({
             cssRule: container.cssContainer.cssRules[0] as CSSStyleRule,
             selector: hashedSelector
         });
-        ruleInstance.count += 1;
         container.cache.set(hashedSelector, ruleInstance);
     }
+    ruleInstance.count += 1;
     return ruleInstance;
 }
 
@@ -107,9 +107,9 @@ export function useStyleRule(args: CreateStyleRule) {
         () => createStyleRule(args),
         [propertiesToString(args.properties ?? {}), args.suffix]
     );
-    useEffect(() => () => rule.delete(), []);
+    useInsertionEffect(() => () => rule.delete(), []);
     const prevDeleteFn = usePrevious(() => rule.delete());
-    useEffect(() => prevDeleteFn?.(), [rule]);
+    useInsertionEffect(() => prevDeleteFn?.(), [rule]);
     return rule;
 }
 
