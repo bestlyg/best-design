@@ -1,4 +1,4 @@
-import { RuleContainer } from './rule';
+import { RuleContainer } from "./rule";
 
 export class Style extends RuleContainer {
     started = false;

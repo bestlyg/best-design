@@ -1,5 +1,7 @@
+import { useEffect, useMemo } from 'react';
 import type { CSSProperties, CSSRuleContainer } from '../types';
-import { transformStyleValue } from '../utils';
+import { propertiesToString, transformStyleValue, usePrevious } from '../utils';
+import hash from '@emotion/hash';
 
 export class RuleContainer {
     cache = new Map<string, StyleRule>();
@@ -66,6 +68,46 @@ export class StyleRule extends Rule {
             style?.setProperty(key, transformStyleValue(key, val));
         }
     }
+}
+
+export interface CreateStyleRule {
+    container: RuleContainer;
+    media?: string;
+    suffix?: string;
+    properties?: CSSProperties;
+    prefix?: string;
+}
+
+export function createStyleRule({
+    suffix = '',
+    properties = {},
+    container,
+    prefix = 'css'
+}: CreateStyleRule): StyleRule {
+    const propertyStr = propertiesToString(properties);
+    const hashedSelector = `${prefix}-${hash(prefix + suffix + propertyStr)}`;
+    const mergedSelector = `${hashedSelector}${suffix}`;
+    const ruleStr = `.${mergedSelector}{${propertyStr}}`;
+    container.cssContainer.insertRule(ruleStr);
+    const ruleInstance = new StyleRule({
+        container,
+        cssRule: container.cssContainer.cssRules[0] as CSSStyleRule,
+        selector: hashedSelector
+    });
+    ruleInstance.count += 1;
+    container.cache.set(hashedSelector, ruleInstance);
+    return ruleInstance;
+}
+
+export function useStyleRule(args: CreateStyleRule) {
+    const rule = useMemo(
+        () => createStyleRule(args),
+        [propertiesToString(args.properties ?? {}), args.suffix]
+    );
+    useEffect(() => () => rule.delete(), []);
+    const prevDeleteFn = usePrevious(() => rule.delete());
+    useEffect(() => prevDeleteFn?.(), [rule]);
+    return rule;
 }
 
 export class MediaRule extends Rule {
