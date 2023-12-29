@@ -1,5 +1,5 @@
 import type { CSSProperties, CSSRuleContainer } from '../types';
-import { transformStyleValue, createStyleRule, CreateStyleRule } from '../utils';
+import { transformStyleValue } from '../utils';
 
 export class RuleContainer {
     cache = new Map<string, StyleRule>();
